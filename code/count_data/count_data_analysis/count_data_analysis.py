@@ -21,6 +21,28 @@ def load_csv( path="aa" ):
    df = pd.read_csv("/home/pawel-dell/learning/datasets/count_data/car_accidents/cars.csv")
    return df.ix[:,1]
 
+def plt_comparison( p_data
+                  , p_x
+                  , p_x_label
+                  , p_y_label
+                  , p_title
+                  ):
+  global colors
+  fig = plt.figure(figsize=(10,6))
+  x_min = np.min(p_x)
+  x_max = np.max(p_x)
+  for i in xrange( len(p_data) ):
+
+    # add stacked charts
+    # this many charts - int(str(len(z))
+    # this many columns - '1'
+    # this exactly char - str(i+1)
+    fig.add_subplot( int(str(len(p_data)) + '1' + str(i+1) ) )
+    plt.hist(p_data[i], range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+    plt.xlim(x_min, x_max)
+    plt.xlabel( p_x_label[i] )
+    plt.ylabel( p_y_label[i] )
+    plt.title( p_title[i] )
 
 #at first we run (-) minimum likelihood optimisation
 
@@ -53,39 +75,26 @@ def mcmc_estimation( N, p_model ):
    mc_res = mcmc.sample(N,100)
    return mcmc
 
-def main():
-
-   global g_df, M
-   g_df=load_csv("aa")
-
-   ml = max_likelihood()
-
-   s_mu ,s_ob ,s_es ,s_model = simple_mcmc_model( g_df )
-   s_map = max_a_posteriori( s_model )
-   s_mcmc = mcmc_estimation( M, s_model )
-
-   return s_mu, s_ob, s_es, s_model, s_map,  ml, g_df, s_mcmc
-
 def negative_b_mcm_model( p_df ):
 
   n_mu =  pm.Normal('n_mu', mu=1650, tau=0.00001)
   n_lam = pm.Uniform('n_uni_alpha',0,1)
   n_alpha = pm.Exponential('n_alpha', beta=n_lam)
-  n_y_obs = pm.NegativeBinomial('n_observed', mu=mu, alpha = n_alpha, value=accidents, observed=True)
-  n_y_pre = pm.NegativeBinomial('n_estimated',mu=mu, alpha = n_alpha, observed=False)
-  n_model = pm.Model([ n_mu, n_lam, n_alpha, n_y_obs, n_y_pre ])
-  return n_model
+  n_ob = pm.NegativeBinomial('n_observed', mu=n_mu, alpha = n_alpha, value=p_df, observed=True)
+  n_es = pm.NegativeBinomial('n_estimated',mu=n_mu, alpha = n_alpha, observed=False)
+  n_model = pm.Model([ n_mu, n_lam, n_alpha, n_ob, n_es ])
+
+  return n_mu, n_lam, n_alpha, n_ob, n_es, n_model
 
 def two_model_comparison( p_df ):
 
-   d_model_alpha = 1.0 / accidents.mean()
-   a_n = len(accidents)
-
+   a_n = len(p_df)
    d_lam = pm.Uniform('d_uni_alpha',0,1)
-   d_alpha = pm.Exponential('d_alpha', beta=d_lam)
-   lambda_1 = pm.Exponential("lambda_1", d_lam)
+   #lambda_1 = pm.Exponential("lambda_1", d_lam)
+   lambda_1 = pm.Exponential("lambda_1", d_lam)   
    lambda_2 = pm.Exponential("lambda_2", d_lam)
-   tau = pm.DiscreteUniform("tau", lower=x_min, upper=x_max)
+
+   tau = pm.DiscreteUniform("tau", lower=min(p_df), upper=max(p_df) )
 
    @pm.deterministic
    def lambda_(tau=tau, lambda_1=lambda_1, lambda_2=lambda_2):
@@ -94,38 +103,31 @@ def two_model_comparison( p_df ):
       out[tau:] = lambda_2  # lambda after (and including) tau is lambda2
       return out
 
-   #d_obs = pm.NegativeBinomial('d_observed', mu=lambda_, alpha = d_alpha, value=accidents, observed=True)
-   d_obs = pm.Poisson('d_observed', mu=lambda_, value=accidents, observed=True)
+   #d_obs = pm.NegativeBinomial('d_observed', mu=lambda_, alpha = d_alpha, value=p_df, observed=True)
+   d_obs = pm.Poisson('d_observed', mu=lambda_, value=p_df, observed=True)
 
-   d_model = pm.Model([d_obs,d_lam, d_alpha, lambda_1, lambda_2, tau])
+   d_model = pm.Model([d_obs, d_lam, lambda_1, lambda_2, tau])
 
-   d_mcmc = pm.MCMC(d_model)
-   return d_mcmc
-   #d_mcmc.sample(M, 10000, 1)
+   return d_model, d_obs, d_lam, lambda_1, lambda_2, tau
 
-   #lambda_1_samples = d_mcmc.trace('lambda_1')[:]
-   #lambda_2_samples = d_mcmc.trace('lambda_2')[:]
-   #tau_samples = d_mcmc.trace('tau')[:]
 
-def plt_comparison( p_data
-                  , p_x
-                  , p_x_label
-                  , p_y_label
-                  , p_title
-                  ):
-  global colors
-  fig = plt.figure(figsize=(10,6))
-  x_min = np.min(p_x)
-  x_max = np.max(p_x)
-  for i in xrange( len(p_data) ):
+def main():
 
-    # add stacked charts
-    # this many charts - int(str(len(z))
-    # this many columns - '1'
-    # this exactly char - str(i+1)
-    fig.add_subplot( int(str(len(p_data)) + '1' + str(i+1) ) )
-    plt.hist(p_data[i], range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
-    plt.xlim(x_min, x_max)
-    plt.xlabel( p_x_label[i] )
-    plt.ylabel( p_y_label[i] )
-    plt.title( p_title[i] )
+   global g_df, M
+   g_df=load_csv("aa")
+
+   ml = max_likelihood()
+   s_mu ,s_ob ,s_es ,s_model = simple_mcmc_model( g_df )
+   s_map = max_a_posteriori( s_model )
+   s_mcmc = mcmc_estimation( M, s_model )
+
+
+   n_mu, n_lam, n_alpha, n_ob, n_es, n_model = negative_b_mcm_model( g_df )
+   n_mcmc = mcmc_estimation( M, n_model )
+
+   d_model, d_obs, d_lam, lambda_1, lambda_2, tau = two_model_comparison( g_df )
+   d_mcmc = mcmc_estimation( M, d_model )
+
+   return s_mu, s_ob, s_es, s_model, s_map,  ml, g_df, s_mcmc, n_mu, n_lam, n_alpha, n_ob, n_es, n_model, n_mcmc\
+        , d_model, d_obs, d_lam, lambda_1, lambda_2, tau, d_mcmc
+
