@@ -1,0 +1,22 @@
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from sklearn.metrics import r2_score
+## r2_score(y, lin_reg.fit(x,y).predict(x))
+from sklearn.pipeline import make_pipeline
+from sklearn import linear_model
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.cross_validation import train_test_split
+
+lin_reg = linear_model.LinearRegression(normalize=False, fit_intercept=True)
+
+c_inter = PolynomialFeatures(degree=2, interaction_only = True, include_bias=False)
+## xi = c_inter.fit_transform(x)
+
+c_cub = PolynomialFeatures(degree = 3, interaction_only = False, include_bias = False)
+c_qud = PolynomialFeatures(degree = 4, interaction_only = False, include_bias = False)
+
+from sklearn.linear_model import LogisticRegression
+clf = LogisticRegression()
+

@@ -1,0 +1,70 @@
+from __future__ import print_function
+import numpy as np
+import pandas as pd
+import csv
+import string
+
+
+c = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/calls.csv", skiprows = 1)
+l = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/leads.csv", skiprows = 1)
+s = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/signups.csv", skiprows = 1)
+
+c.columns =[ 'Phone_Number','Call_Outcome','Agent','Call_Number']
+l.columns =[ 'Name', 'Phone_Number','Region','Sector','Age']
+#s.columns =[ 'Lead', 'Approval','Decision']
+
+##the most calls
+##
+'''
+Which agent made the most calls? 
+'''
+###
+def question_1():
+   print(c.groupby('Agent').size())
+
+###
+'''
+For the leads that received one or more calls, how many calls were received on
+average?
+'''
+### 
+
+def question_2():
+  cl = pd.merge(c,l, on='Phone_Number', how='inner', indicator=True)
+  #called more than once
+  a = cl.groupby('Phone_Number')
+  b = a.filter( lambda x: len(x) > 1)
+  d=b.groupby("Phone_Number")
+  e=d['Agent'].aggregate( len).reset_index()
+  print(np.mean(e.ix[:,'Agent']))
+
+###
+'''
+For the leads that signed up, how many calls were received, on average?
+'''
+###
+def question_3():
+
+   cl = pd.merge(c,l, on='Phone_Number', how='inner', indicator=True)
+   a=cl[ cl['Call_Outcome']=='INTERESTED']
+   b = pd.DataFrame(a['Phone_Number'].unique())
+   b.columns = ['Phone_Number']
+   d = pd.merge(cl,b, on = 'Phone_Number', how ='inner')
+   e = d.groupby("Phone_Number")
+   f = e['Agent'].aggregate( len).reset_index()
+   print(np.mean(f.ix[:,'Agent']))
+
+###
+'''
+Which agent had the most signups? Which assumptions did you make? (note that there
+is a many-to-one relationship between calls and leads)
+'''
+###
+cl = pd.merge(c,l, on='Phone_Number', how='inner', indicator=True)
+>>> a=cl[cl['Call_Outcome'] == 'INTERESTED' ]
+>>> b=pd.DataFrame(a['Phone_Number'].unique())
+>>> b.columns=['Phone_Number']
+>>> cl[ cl['Phone_Number']==992847426160]
+
+
+

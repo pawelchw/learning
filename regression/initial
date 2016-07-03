@@ -1,0 +1,14 @@
+>>> x = dataset.ix[:,:-1]
+>>> y = dataset['target'].values
+>>> xc = sm.add_constant(x)
+>>> lin_reg = sm.OLS(y,xc)
+>>> fit_mod = lin_reg.fit()
+
+>>> import statsmodels.api as sm
+>>> import statsmodels.formula.api as smf
+
+>>> lin_reg_other = smf.ols( formula = 'target ~ RM', data = dataset)
+>>> fit_mod = lin_reg_other.fit()
+>>> fit_mod.summary()
+>>> print(fit_mod.params)
+>>> fit_mod.summary()

@@ -1,0 +1,56 @@
+from __future__ import print_function
+import numpy as np
+import pandas as pd
+import csv
+import string
+
+def f_read_csv( l_file_path
+              , l_file_path_stripped):
+
+   with open(l_file_path) as f:
+      reader = csv.reader(f, delimiter =",")
+      with open(l_file_path_stripped, "w") as fo:
+         writer = csv.writer(fo)
+         for rec in reader:
+             writer.writerow( map(string.strip, rec) )
+
+f_read_csv( "/home/pawel-dell/learning/cv_pack/iwo/calls.csv"
+          , "/home/pawel-dell/learning/cv_pack/iwo/calls_str.csv"
+          )
+
+f_read_csv( "/home/pawel-dell/learning/cv_pack/iwo/leads.csv"
+          , "/home/pawel-dell/learning/cv_pack/iwo/leads_str.csv"
+          )
+
+f_read_csv( "/home/pawel-dell/learning/cv_pack/iwo/signups.csv"
+          , "/home/pawel-dell/learning/cv_pack/iwo/signups_str.csv"
+          )
+       
+c = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/calls_str.csv", skiprows = 1)
+l = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/leads_str.csv", skiprows = 1)
+s = pd.read_csv("/home/pawel-dell/learning/cv_pack/iwo/signups_str.csv", skiprows = 1)
+
+c.columns =[ 'Phone_Number','Call_Outcome','Agent','Call_Number']
+l.columns =[ 'Name', 'Phone_Number','Region','Sector','Age']
+#s.columns =[ 'Lead', 'Approval','Decision']
+
+##the most calls
+def question_1():
+   print(c.groupby('Agent').size())
+
+## 
+
+#def question_2():
+cl = pd.merge(c,l, on='Phone_Number', how='outer', indicator=True)
+#  return cl
+
+
+
+#def main():
+
+#   cl=question_2()
+#   print(cl.head())
+#   return cl
+
+
+#main()

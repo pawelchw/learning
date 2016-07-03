@@ -1,0 +1,17 @@
+Dataset:     nazi.dat
+
+Source: K.H. Jarausch and G. Arminger (1989), "The German Teaching Profession 
+and Nazi Party Membership: A Demographic Logit Model",
+Journal of Interdisciplinary History, Vol. 20, pp 197-225.
+
+Description: Counts of members and non-members of Nazi party for teachers
+by: Religion, Cohort, Residence, and Gender
+
+Variables/Columns:
+
+Religion   1  /*  1=Protestant, 2=Catholic, 3=None  */
+Cohort 5 /*1=Empire,2=Late Empire,3=early Weimar,4=Late Weimar,5=3rd Reich */
+Residence 9  /*  1=rursl,  2=urban   */
+Gender   13  /*  1=male, 2=female  */ 
+Membership   17   /*  1=Yes  0=No  */
+Count   21-23   /*  # in category   */
