@@ -1,0 +1,3 @@
+from scipy.special import comb
+
+comb( 0 ,3 , exact=True)

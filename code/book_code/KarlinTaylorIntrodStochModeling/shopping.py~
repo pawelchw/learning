@@ -1,0 +1,8 @@
+import pymc as pm
+
+#customers buy with probability of 0.3
+
+b_alpha = 30
+b_beta = 70
+
+shopping = pm.Beta("customer_shopping", alpha = b_alpha, beta = b_beta)

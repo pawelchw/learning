@@ -1,0 +1,68 @@
+\documentclass{article}
+\begin{document}
+
+\section{General Notes}
+There is a model on mother earnings ranges divided into 4 scales ( see Gelman page 67)
+once the model has been fit, the following coefficients have been estimated:
+\begin{equation}
+s = 82.0 + 3.8 \cdot w_2 + 11.5 \cdot w_3 + 5.2 \cdot w_4
+\end{equation}
+Observe that $w_1$ is missing from the equation, and its predicted score value is the intercept ( and other values being equal to zero).
+There is a nice example in Gelman page 53 on how different units affect coefficient interpretation. Compare the following
+
+\begin{equation}
+earnings = -61000 + 51 \cdot height[in millimetres] + \epsilon
+\end{equation}
+And
+\begin{equation}
+ earnings = -61000 + 81000000 \cdot height[in miles] + \epsilon
+\end{equation}
+
+It has been given that standard deviation of height is equal to 3.8 inches, which is 97 millimetres or 0.000061 miles. Observe that we obtain the same expected difference in earnings for the matching units
+\begin{equation}
+51 \cdot 97 = 81000000 \cdot 0.000061 = 4900
+\end{equation}
+
+\section{Scaling}
+
+Suppose there is this model
+\begin{equation}
+\log_earn = height + male
+\end{equation}
+Once we fit a linear regression model we have received the following coefficients:
+\begin{equation}
+\log_earn = 8.153 + 0.021height + 0.423male
+\end{equation}
+Also,
+\begin{equation}
+ \exp(0.021) = 1.02
+\end{equation}
+Therefore, for two people of the same gender one inch of height contributes towards $2\%$ of salary increase. Say that the standard errors are as follows:
+\begin{tabular}{|c|c|c|}
+\hline 
+intercept& height & male \\ \hline 
+0.603 & 0.009  & 0.072\\ 
+\hline 
+\end{tabular} 
+
+A 70-inch tall person will have earnings equal to $8.153 + 0.021 \cdot 70 = 9.623$. Knowing that predictive standard deviation is $0.88$, there is $68$ chance the person earning are within $9.623 +/- 0.88= [8.74, 10.50]= [\exp(8.74), \exp(10.50)] = [6000, 36000]$. The $R^2$ value for this model was pretty low therefore it is expected to observe such a wide salary range.
+\section{Interaction}
+
+Consider the following model
+\begin{equation}
+\log( earnings ) ~ (height)
+\end{equation}
+Once we have fit the equation coefficients given data we obtain the following:
+\begin{enumerate}
+\item intercept - 5.74
+\item height - 0.06
+\end{enumerate}
+The difference of $0.06$ in height corresponds to $\exp(0.06)=1.062$. Therefore, a unite change of $\beta_1$ corresponds to a $6\%$ increase in the $y$ value. The opposite holds for negative values (i.e there is $6\%$ decrease in the outcome value for a drop of one unit in $\beta_1$). Observe that It would be interesting to see if gender distinction contributes to the $6\%$ increase.
+
+Suppose there is this equation
+\begin{equation}
+\log(e) = 8.4+0.017 \cdot h - 0.079 \cdot m + 0.007 \cdot h \cdot m 
+\end{equation}
+where $e$ corresponds to earnings, $h$ height, $m$ to male and $h \cdot m $ it an interaction term between height and male. Now, observe that male intercept does not really have a proper interpretation as it expects the height being equal to 0. However, the interaction term corresponds to the `` difference in the slopes for log earnings between men and women''. Therefore, in interaction term gives us $0.7\%$ increase for men for an inch increase in their height. Moreover, for men and inch increase in hight predicts $1.7\% + 0.7\% = 2.4\%$
+
+\end{document}

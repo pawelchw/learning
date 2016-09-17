@@ -1,0 +1,81 @@
+\documentclass{article}
+\begin{document}
+
+\subsubsection*{Single predictor - binary prediction model}
+If there is a binary predictor model, the regression coefficient is the difference between the averages of the two groups. Imagine a simple model:
+\begin{equation}
+y = \beta_0 + \beta_1x,
+\end{equation}
+\indent
+ where $x$ is a binary variable. Suppose, we could plot two populations, and placed them next to each other,  with one group on the left (i.e. $x=0$) and another on the right ($x=1$). Once we have calculated the regression line, it goes through the averages of both groups.
+\\
+The coefficient on $x$ is equal to:
+\begin{equation}
+\beta_1 = (\beta_0 + \beta_1 \cdot 1) - (\beta_0 + \beta_1 \cdot 0),
+\end{equation}
+\indent
+ which is the difference in averages of two sub groups. In other words, depending on the sign, we could make the following statements
+\begin{enumerate}
+\item $\beta_1 > 0$ the subgroups for which $x=1$ will on average have $\beta_1$ more, when it comes to the value of $y$
+\item $\beta_1 <0$ the subgroups for which $x=1$ will on average have $\beta_1$ less, when it comes to the value of $y$
+\end{enumerate}
+
+\subsubsection*{Multiple predictors}
+To say that we compare once coefficient difference, and hold other coefficient values constant is the following; say there is a model:
+\begin{equation}
+y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_3 ,
+\end{equation}
+\indent
+and $beta_1$ is a binary variable. Therefore, the following holds:
+\begin{enumerate}
+\item $\beta_0$ - when analysing the intercept, we try to keep the other $\beta$'s at 0 value ( same for the binary value). This is not always meaningful, as for some variables (e.g. age or IQ score) this might not be meaningful enough.
+\item $\beta_1$ - we analyse the difference between two subgroups while holding the other values constant. Therefore, the average difference in the final score is equal to $\beta_1$ for the reference group $i.e. x_2=0$.
+\item $\beta_2$ - the difference of a unit change is equal to $\beta_2$, when holding the other predictors constant.
+\item $\beta_3$ - the difference of a unit change is equal to $\beta_3$, when holding the other predictors constant.
+\end{enumerate}
+
+\subsubsection*{Least square estimate}
+For the model:
+\begin{equation}
+y = X\beta + \epsilon
+\end{equation}
+\indent
+we search for a $\hat{\beta}$ that minimizes the sum of squared errors:
+\begin{equation}
+\sum_{i=1}^{n}(y_i - X_i \hat{\beta})^2
+\end{equation}
+\indent
+The estimate is also maximum likelihood estimate when i.i.d errors $\epsilon_i$ are normally distributed with equal variance.
+
+\subsubsection*{Uncertainty of estimates}
+The standard estimation errors of $\hat{\beta}$ denote the uncertainty of estimation. In general, coefficient estimates within two standard errors are consistent with the data. The uncertainty for difference coefficient is correlated except for the studies with balanced designs.
+	
+\subsubsection*{Residuals}
+The differences between the actual and estimated values are called residuals and calculated in the following form:
+
+\begin{equation}
+r_i = y_i - X_i\hat{\beta}
+\end{equation}
+
+The residuals are uncorrelated with all the predictors in the model. Say, for a model with a constant, the residuals are uncorrelated with it, and therefore have a mean of 0. This is not the assumption of regression theory.
+
+\subsubsection*{Residual standard deviation}
+The residual standard deviation is calculated in the following way:
+\begin{equation}
+\hat{\sigma} = \sqrt{\frac{\sum_{i=1}^{n}r_{i}^2}{(n-k)}}
+\end{equation}
+\indent
+Therefore,  $\hat{\sigma}$ denotes the accuracy of $\hat{y_i}$ estimates.
+Also, here are the key points on the standard errors:
+\begin{enumerate}
+\item Standard errors for $\beta$ are proportional to $\sigma$ .
+\item $\hat{\sigma}$ - the smaller the residual variance the better the fit.
+\item $\hat{\sigma}^2$ ( the residual standard deviation) denotes how much variance is not explained
+\item $R^2 = 1 - \frac{\hat{\sigma}^2}{s_{y}^2}$ how much variance is explained by the model. $s_{y}$ denotes standard deviation of the model.
+\item The estimated variance $\hat{\sigma}^2$ has a sampling distribution centred at the true value of $\sigma^2$ and proportional to $\chi^2$ distribution with $n-k$ degrees of freedom.
+
+\end{enumerate}
+
+\subsubsection*{Things to be added}
+There is a secion on page 42 discussing how model with less data generates higher value for $R^2$. The reason being is that residual standard deviation is the same, but standard deviation of the data $S_{y}^2$ shrinks making $R^2$ larger. This could be supported with an example / image.
+\end{document}

@@ -1,0 +1,23 @@
+\documentclass{article}
+\begin{document}
+Consider a circular spinner with $N$ fields. Each field can be chosen with a probabilit of $\frac{1}{N}$. But what if we instead consider the ratio of probability to sector width? The probability
+of stopping in a sector is $\frac{1}{N}$, and the width of a sector is $\frac{1}{N}$, so the ratio is 
+\begin{equation}
+\frac{ \frac{1}{N} }{ \frac{1}{N} } = 1
+\end{equation}. 
+That ratio is called the probability density. It is called probability density by analogy with material density, which is defined as mass divided by volume. More loosely speaking, density is defined as the amount of stuff divided by the space it takes up. Applying that to the spinner, probability density in a sector is the amount of probability in that sector divided by the size of the sector. Again by analogy to material density, the amount of probability in the sector is called the probability mass. To reiterate, the probability density in an interval is the probability mass of that interval divided by the interval width.
+\\
+\\
+The equation for the mean is:
+\begin{equation}
+\mu_x = \int dx p(x)x
+\end{equation}
+Variance is defined as:
+\begin{equation}
+\sigma_{x}^{2} = \int dx p(x)(x- \mu_x)^2
+\end{equation}
+Therefore, the variance is just the average value of $(x- \mu_x)^2$
+
+
+From intuitive probability. If the sample space has $N$ events, there are $2^N$ possible outcomes. For a sample space of die toss that consists of $S=\{1,2,3,4,5,6\}$, there will be $2^6=64$ possible outcomes that include an empty set $E_0=\emptyset$ and $E_S=\{1,2,3,4,5,6\}$.
+\end{document}

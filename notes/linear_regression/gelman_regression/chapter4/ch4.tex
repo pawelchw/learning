@@ -1,0 +1,21 @@
+\documentclass{article}
+\begin{document}
+
+\subsubsection*{Linear transformation}
+Linear transformations do not affect the fit of the model, as they get cancelled out when building the prediction matrix. On the other hand, they influence the multilevel model, as it will be shown later.  However, they make the model easier to understand.
+\subsubsection*{Logarithmic transformation}
+It has been noted on the page 60 that coefficients for the log transformations will opten reside on a $(-1, 1)$ scale. However, this is not the rule.
+\subsubsection*{Scaling}
+Categorical scaling can be achieved by placing the values between $\{-1,1\}$ with $0$ being the moderate or central value. This has got an application for options varying between disagree and strongly agree. It is very important to note that scaling will not have any effect on $R^"$ values. It has been shown that centring the data with any of the following methods :
+\begin{enumerate}
+\item mean subtraction - i.e. $x = x - \mu_x$
+\item conventional centring point - i.e. $x = x - a$ where $a$ is a fixed value
+\item standardization, mean subtraction and division by standard deviation - i.e. $x = \frac{x - \mu_x}{\sigma_x}$
+\end{enumerate}
+
+\\
+\textbf{Note}
+\\
+When all predictors and outcome variables are standardized then the slope of the regression line will always have value less than 1. Therefore, if $x$ is roughly $\sigma_x$ above $\mu_x$, then its predicted value should correspond to $y \in \{\mu_y, \mu_y + \sigma_y\}$. This is referred to as regression to the mean
+
+\end{document}

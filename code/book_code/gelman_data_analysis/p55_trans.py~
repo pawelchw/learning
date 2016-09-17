@@ -1,0 +1,40 @@
+from __future__ import print_function
+import numpy as np
+import pandas as pd
+import csv
+import string
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+df = pd.io.stata.read_stata("/home/pawel-dell/learning/datasets/regression/gelman_reg/child.iq/kidiq.dta")
+#print(df.head())
+
+def run_reg(data, outcome, predictors, mode='ols', ps = 'n'):
+
+  ttt = data.ix[:, outcome+predictors]
+
+  if mode=='logit':
+
+    logit = sm.Logit(tt.ix[:,outcome], sm.add_constant(ttt.ix[:, predictors]) )
+    res= logit.fit()
+    if ps=='y':
+       print(res.summary())
+
+  elif mode =='ols':
+
+    ols = sm.OLS(ttt.ix[:,outcome], sm.add_constant(ttt.ix[:, predictors]) )
+    res= ols.fit()
+    if ps=='y':
+       print(res.summary())
+
+  return ttt, res
+
+
+#plot_double_res(df,o,p,b,m)
+#interactions
+df['mom_hs_iq']= df['mom_iq']*df['mom_hs']
+p=['mom_iq']
+b=['mom_hs']
+i=['mom_hs_iq']
+o=['kid_score']
+tt, m =run_reg(df,o,p+b+i,'ols','y')

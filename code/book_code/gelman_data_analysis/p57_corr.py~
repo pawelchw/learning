@@ -1,0 +1,24 @@
+###
+'''
+This code shows that standarization does not improve the fit - the r squared values are the same for both models.
+Interestingly, the interaction intercept and its standard error remain the same too.
+'''
+###
+from __future__ import print_function
+import numpy as np
+import pandas as pd
+import csv
+import string
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+n=50
+x = np.random.normal(15,1,n)
+y = np.random.normal(5,1,n)
+d = pd.DataFrame()
+d['y'] = ( y - np.mean(y) ) / 2.0 * np.std(y)
+d['x'] = ( x - np.mean(x) ) / 2.0 * np.std(x)
+l = sm.OLS(d.ix[:,'y'], d.ix[:,'x']) 
+r = l.fit()
+print(r.summary())
+

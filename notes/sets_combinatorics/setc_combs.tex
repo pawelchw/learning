@@ -1,0 +1,98 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+There will be two sections in this chapter. One on set theory and one on combinatorics
+\section{Set theory}
+Formula for $P(E, F) = P(E) + P(F) - P(EF)$. For a die example coming up to or less than 3, there is two sets
+\begin{equation}
+E = \{1,2,3\}
+F = \{3\}
+\end{equation}
+This yields
+\begin{equation}
+P(E, F) = P(E) + P(F) - P(EF)=\frac{3}{6} + \frac{1}{6} - \frac{1}{6}=\frac{3}{6}
+\end{equation}
+
+The expansion of the formula is the following:
+\begin{equation}
+P(A \cup B \cup C) = P(A \cup  (B \cup C) ) = P(A) + P(B \cup C) - P(A(B \cup C)) = P(A) + P(B) + P(C) - P(BC) - P(A(B \cup C))
+\end{equation}
+
+It can be shown that
+\begin{equation}
+P(A(B \cup C)) = P(AB \cup  AC)= P(AB) + P(AC) - P(ABC)
+\end{equation}
+Therefore
+\begin{equation}
+P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(BC) - P(AB) - P(AC) + P(ABC)
+\end{equation}
+
+Also it is important to note that
+\begin{equation}
+P[A \cup C |B] = \frac{P[(A \cup C) \cap B] }{P[B]} = \frac{P[(A \cap B)]  \cup (C \cap B)] }{P[B]} = \frac{P[(A \cap B)]  \cup P[(C \cap B)] }{P[B]}= P[A|B] + P[C|B]
+\end{equation}
+
+The above equation gives us idea of the total law of probability . If sample space $S$ is defined into $N$ partitions $B_1, \cdots, B_N$ such that $S= \cup_{i=1}^{N}B_i$ and $B_i \cap B_j = \emptyset$, then $P[A]$ can be rewritten in this form:
+\begin{equation}
+P[A]= P[A \cap S] = P[ A \cap ( \cup_{i=1}^{N}B_i)]=P[(A \cap B_1) \cup (A \cap B_2) \cdots (A \cap B_N)]
+\end{equation}
+This gives us
+
+\begin{equation}
+P[A] = \sum_{i=1}^{N} P[A \cap B_i]
+\end{equation}
+, which given the formula above yields
+\begin{equation}
+P[A] = \sum_{i=1}^{N} P[A| B_i]P[B_i]
+\end{equation}
+This can be used in problems when probability can be expanded into a tree form ( e.g. calculating probability of selecting a red balls from $N$ urns, each having $P[A_i]$ red ball proportion).
+\section{Combinatorics}
+There is an urn with $k$ red balls and $N-k$ black balls. We want to define event where red ball is chosen followed by a black one \textit{with replacement}. This is represented by the event  $E = \{ (z_1, z_2): z_1= 1,\cdots,k, z_2=k+1,\cdots,N \}$. This is defined as
+
+\begin{equation}
+P[E] = \frac{N_E}{N_S}= \frac{k(N-k)}{N^2} = \frac{k}{N} (N-k) \frac{1}{N}=\frac{k}{N}(1-\frac{k}{N})
+\end{equation}
+
+Observe that if we set $p=\frac{k}{N}$ we will get a proportion $p(1-p)$
+\\
+Now, consider sampling \textit{without replacement}.
+\begin{equation}
+P[E]= \frac{k(N-k)}{N(N-1)}=\frac{k}{N}\frac{(N-k)N}{N}\frac{1}{N-1}=p(1-p)\frac{N}{1-N}
+\end{equation}
+
+There are two options to consider,
+\begin{enumerate}
+\item Sampling with replacement - we use $N^n$ formula
+\item Sampling without replacement  - there is two options in here
+\begin{enumerate}
+\item ordered sample - for which we will use $\frac{N!}{(N-n)!}$. These are referred to as permutations, and expressed as:
+\begin{equation}
+\frac{N!}{(N-n)!} = \frac{N(N-1)(N-2) \cdots 2\cdot1}{N(N-1)(N-2) \cdots (N-n+1)(N-n)}
+\end{equation}
+This is sometimes referred to as $x$ to the $k$ falling, and can be rewritten as 
+\begin{equation}
+x^k=(N)_k =x(x+1)(x+2) \cdots (x+k-1) = \prod_{i=0}^{k=1}(x-i)
+\end{equation}
+\item unordered sample - for which we will use the binomial coefficient  ${n}{k} =\frac{N!}{n!(N-n)!}$. These are called combinations.
+\end{enumerate}
+\end{enumerate}
+
+In general, there is fewer results for combinations, than permutations. Also, as the well-known fact states a combination lock is actually a permutation lock. For a permutation lock both sequences $\{1,4,6,9\}$ and $\{6,1,9,4\}$ are different. While for a combination lock both are treated as one sequence.
+
+\subsection{Circular Permutations}
+Circular permutations appear in elements ordered in a circle ( e.g. people seated at a round table). If there is three people  to be seated at a bench there is $n!=6$ ways of doing that. Now, the main difference between a circular and ``straight'' permutations, is the fact that there is no obvious beginning when looking at circular objects. Imagine placing 3 people at a clock like table, with first person sitting at 12 o'clock hour. These are the possible arrangements:
+\begin{enumerate}
+\item $1,2,3$
+\item $1,3,2$
+\item $2,1,3$ - second arrangement turned once clockwise
+\item $2,3,1$ - first arrangement turned once anti clockwise
+\item $3,2,1$ - first arrangement turned once clockwise
+\item $3,1,2$ - second arrangement turned once anti clockwise
+\end{enumerate}
+Therefore, for $3$ people there is only $(n-1)!=2!$ ways that they can be arranged at the table. This can be understood in a way of ``transforming'' a clock like table into a bench - to do that we have to mark one sit as the beginning. In other words, for $n$ people we take one person and place them in that marked location. The other $n-1$ people can be arranged in $(n-1)!$ ways.
+
+
+
+
+
+\end{document}

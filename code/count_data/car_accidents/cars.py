@@ -1,0 +1,178 @@
+'''
+Simple analysis of the file found here
+https://datamarket.com/data/set/22p5/number-of-deaths-and-serious-injuries-in-uk-road-accidents-each-month-jan-1969-dec-1984-seatbelt-law-introduced-in-feb-1983-indicator-in-second-column#!ds=22p5!2eks&display=line
+'''
+from __future__ import print_function
+import pandas as pd
+import numpy as np
+import pymc as pm
+import scipy.stats as stats
+import scipy.optimize as opt
+import matplotlib.pyplot as plt
+plt.style.use('bmh')
+colors = ['#348ABD', '#A60628', '#7A68A6', '#467821', '#D55E00', 
+          '#CC79A7', '#56B4E9', '#009E73', '#F0E442', '#0072B2']
+
+
+df = pd.read_csv("/home/pawel-dell/learning/datasets/count_data/car_accidents/cars.csv")
+
+accidents = df.ix[:,1]
+
+
+#at first we run (-) minimum likelihood optimisation
+def poisson_logprob(mu, sign=-1):
+    return np.sum(sign*stats.poisson.logpmf(accidents, mu=mu))
+
+freq_results = opt.minimize_scalar(poisson_logprob)
+
+
+x_min = np.min(accidents)-10
+x_max = np.max(accidents)+10
+x_mu = np.int(freq_results['x'])
+'''
+for i in range(x_min,x_max):
+    plt.bar(i, stats.poisson.pmf(x_mu, i), color=colors[3])
+
+plt.show()
+'''
+
+# so the problem with this that min and max spawns
+# ('min:', 1047, 'x_max:', 2664)
+# and mle with mu equal to mu: 1670.3072916
+# does not even cover winter values of 2200+
+
+M=50000
+
+#mu = pm.Uniform('mu', lower=x_min, upper=x_max)
+mu =  pm.Normal('mu', mu=1650, tau=0.00001)
+y_obs = pm.Poisson('observed', mu=mu,value=accidents, observed=True)
+y_pre = pm.Poisson('estimated',mu=mu, observed=False)
+model = pm.Model([ mu, y_obs, y_pre ])
+mcmc = pm.MCMC(model)
+# there are two ways at arriving at similar value of mu as above
+# 1) Maximum a posteriori estimation
+'''
+
+  map = pm.MAP(model)
+  map.fit()
+
+
+# 2) or traditional mcmc run
+'''
+mc_res = mcmc.sample(M,100)
+
+print('MLE:',freq_results['x'], 'MCMC:', mcmc.trace('mu')[:].mean())
+
+y_pred =  mcmc.trace('estimated')[:]
+
+
+# but it does not cover much
+def plt_post_pois():
+  fig = plt.figure(figsize=(10,6))
+  fig.add_subplot(211)
+  plt.hist(y_pred, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+  plt.xlim(x_min, x_max)
+  plt.ylabel('Frequency')
+  plt.title('Posterior predictive distribution')
+  fig.add_subplot(212)
+  plt.hist(accidents, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1]) 
+  plt.xlabel('No of accidents')
+  plt.ylabel('Frequency')
+  plt.title('Distribution of observed data')
+  plt.tight_layout()
+  plt.show()
+
+
+
+n_mu =  pm.Normal('n_mu', mu=1650, tau=0.00001)
+n_lam = pm.Uniform('n_uni_alpha',0,1)
+n_alpha = pm.Exponential('n_alpha', beta=n_lam)
+n_y_obs = pm.NegativeBinomial('n_observed', mu=mu, alpha = n_alpha, value=accidents, observed=True)
+n_y_pre = pm.NegativeBinomial('n_estimated',mu=mu, alpha = n_alpha, observed=False)
+n_model = pm.Model([ n_mu, n_lam, n_alpha, n_y_obs, n_y_pre ])
+n_mcmc = pm.MCMC(n_model)
+
+
+mc_res = n_mcmc.sample(M,100)
+
+print('MLE:',freq_results['x'], 'MCMC(Poisson):', mcmc.trace('mu')[:].mean(), 'MCMC(Negative binominal)', n_mcmc.trace('mu')[:].mean())
+
+n_y_pred =  n_mcmc.trace('n_estimated')[:]
+
+
+def plt_post():
+  fig = plt.figure(figsize=(10,6))
+  fig.add_subplot(311)
+  plt.hist(y_pred, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+  plt.xlim(x_min, x_max)
+  plt.ylabel('Frequency')
+  plt.title('Posterior predictive distribution ( Poisson )')
+  fig.add_subplot(312)
+  plt.hist(n_y_pred, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+  plt.xlim(x_min, x_max)
+  plt.ylabel('Frequency')
+  plt.title('Posterior predictive distribution ( negative binominal )')
+  fig.add_subplot(313)
+  plt.hist(accidents, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])
+  plt.xlabel('No of accidents')
+  plt.ylabel('Frequency')
+  plt.title('Distribution of observed data')
+  plt.tight_layout()
+  plt.show()
+
+
+
+
+
+
+
+d_model_alpha = 1.0 / accidents.mean()
+a_n = len(accidents)
+
+d_lam = pm.Uniform('d_uni_alpha',0,1)
+d_alpha = pm.Exponential('d_alpha', beta=d_lam)
+lambda_1 = pm.Exponential("lambda_1", d_lam)
+lambda_2 = pm.Exponential("lambda_2", d_lam)
+tau = pm.DiscreteUniform("tau", lower=x_min, upper=x_max)
+
+@pm.deterministic
+def lambda_(tau=tau, lambda_1=lambda_1, lambda_2=lambda_2):
+    out = np.zeros(a_n)
+    out[:tau] = lambda_1  # lambda before tau is lambda1
+    out[tau:] = lambda_2  # lambda after (and including) tau is lambda2
+    return out
+
+#d_obs = pm.NegativeBinomial('d_observed', mu=lambda_, alpha = d_alpha, value=accidents, observed=True)
+d_obs = pm.Poisson('d_observed', mu=lambda_, value=accidents, observed=True)
+
+d_model = pm.Model([d_obs,d_lam, d_alpha, lambda_1, lambda_2, tau])
+
+d_mcmc = pm.MCMC(d_model)
+d_mcmc.sample(M, 10000, 1)
+
+lambda_1_samples = d_mcmc.trace('lambda_1')[:]
+lambda_2_samples = d_mcmc.trace('lambda_2')[:]
+tau_samples = d_mcmc.trace('tau')[:]
+
+def plt_post_two_lambdas():
+  fig = plt.figure(figsize=(10,6))
+  fig.add_subplot(311)
+  plt.hist(lambda_1_samples, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+  plt.xlim(x_min, x_max)
+  plt.ylabel('Frequency')
+  plt.title('First lambda group')
+  fig.add_subplot(312)
+  plt.hist(lambda_2_samples, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])   
+  plt.xlim(x_min, x_max)
+  plt.ylabel('Frequency')
+  plt.title('Second Lambda Group')
+  fig.add_subplot(313)
+  plt.hist(tau_samples, range=[x_min, x_max], bins=100, histtype='stepfilled', color=colors[1])
+  plt.xlabel('No of accidents')
+  plt.ylabel('Frequency')
+  plt.title('Tau')
+  plt.tight_layout()
+  plt.show()
+
+
+plt_post_two_lambdas()

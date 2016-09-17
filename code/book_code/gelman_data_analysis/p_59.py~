@@ -1,0 +1,17 @@
+###
+'''
+This code shows that correlated data generate zero slope intercept.
+'''
+###
+from required_imports import essentials as es
+
+df = es.pd.read_csv("/home/pawel-dell/learning/datasets/regression/gelman_reg/earnings/df.csv")
+
+df_clr=df[ (~df['earn'].isnull()) | (df['earn'] <1)]
+df_clr = df_clr.reset_index()
+df_clr['earn_l'] = es.np.log(df_clr['earn'])
+
+
+p=['height']
+o=['earn']
+tt, m = es.run_reg(df_clr,o,p,'ols','y')
