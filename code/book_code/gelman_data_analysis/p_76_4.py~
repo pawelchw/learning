@@ -1,0 +1,15 @@
+###
+'''
+This code shows that standarization does not improve the fit - the r squared values are the same for both models.
+Interestingly, the interaction intercept and its standard error remain the same too.
+'''
+###
+from __future__ import print_function
+import numpy as np
+import pandas as pd
+import csv
+import string
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+df = pd.io.stata.read_stata("/home/pawel-dell/learning/datasets/regression/gelman_reg/death.polls/polls.dta")

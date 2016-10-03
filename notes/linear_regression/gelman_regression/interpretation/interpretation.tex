@@ -44,8 +44,9 @@ intercept& height & male \\ \hline
 0.603 & 0.009  & 0.072\\ 
 \hline 
 \end{tabular} 
-
-A 70-inch tall person will have earnings equal to $8.153 + 0.021 \cdot 70 = 9.623$. Knowing that predictive standard deviation is $0.88$, there is $68$ chance the person earning are within $9.623 +/- 0.88= [8.74, 10.50]= [\exp(8.74), \exp(10.50)] = [6000, 36000]$. The $R^2$ value for this model was pretty low therefore it is expected to observe such a wide salary range.
+\\
+\indent
+The regression model has a residual standard deviation of $0.88$, implying that approximately $68\%$ of log earnings will be within $0.88$ of the predicted value. As a result, a 70-inch tall person will have earnings equal to $8.153 + 0.021 \cdot 70 = 9.623$. Knowing that predictive standard deviation is $0.88$, there is $68$ chance the person earning are within $9.623 +/- 0.88= [8.74, 10.50]= [\exp(8.74), \exp(10.50)] = [6000, 36000]$. The $R^2$ value for this model was pretty low therefore it is expected to observe such a wide salary range.
 \section{Interaction}
 
 Consider the following model
@@ -65,4 +66,13 @@ Suppose there is this equation
 \end{equation}
 where $e$ corresponds to earnings, $h$ height, $m$ to male and $h \cdot m $ it an interaction term between height and male. Now, observe that male intercept does not really have a proper interpretation as it expects the height being equal to 0. However, the interaction term corresponds to the `` difference in the slopes for log earnings between men and women''. Therefore, in interaction term gives us $0.7\%$ increase for men for an inch increase in their height. Moreover, for men and inch increase in hight predicts $1.7\% + 0.7\% = 2.4\%$
 
+\section{Logistic Regression}
+Gelman notes on page 81 that ``As with linear regression, the intercept can only be interpreted assuming zero values for the other predictors.'' Observe that this enforces the analyst to look at another point of reference. In other words, if there is equation with only one predictor $x$, we could analyse the predicted value at $\bar{x}$, or any other meaningful point. By meaningful, we are saying values that are observed in the data. In the example provided in the book the equation is given as 
+\begin{equation}
+logit^{-1} = -1.40 + 0.33x
+\end{equation}
+What we can do is pick two consecutive units of $x$ and then report the percentage change, given the unit difference
+\\
+\indent
+It is assumed on page 83 that coefficient estimates within two standard errors from the estimated coefficient value are consistent with data. However, a statistically significant coefficient is required to be at least 2 standard errors \textbf{away from zero}.
 \end{document}

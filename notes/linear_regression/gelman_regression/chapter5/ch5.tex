@@ -1,0 +1,15 @@
+\documentclass{article}
+\begin{document}
+
+\subsubsection*{Introduction}
+For logistic regression we are attempting to model $P(y=1 | \bf{x})$ . In other words we are attempting to solve
+\begin{equation}
+ Pr(y_i = 1) = logit^{-1}(X_i, \beta)
+\end{equation}
+
+The logit function preserves the following equality
+\begin{equation}
+logit^{-1}(x) = \frac{e^{x}}{1+ e^{x}}= \frac{1}{1- e^{-x}}=\frac{1+ \tanh(\frac{x}{2})}{2}
+\end{equation}
+
+\end{document}

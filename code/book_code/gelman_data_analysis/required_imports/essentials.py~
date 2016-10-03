@@ -5,8 +5,8 @@ import csv
 import string
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
-#import pymc3 as pm
-#import seaborn as sns
+import pymc3 as pm
+import seaborn as sns
 
 def run_reg(data, outcome, predictors, mode='ols', ps = 'n'):
 

@@ -1,0 +1,17 @@
+import numpy as np
+import pandas as pd
+
+# we are trying to infere p(H)
+# lets guess values
+
+prior = [ 0.25, 0.5, 0.75]
+guess = [ 0.25, 0.5, 0.25]
+
+def lh( p_h, h, t):
+   return ( (1.0-p_h) **t )*(  p_h**h     )
+
+def post( prior, guess, h, t ):
+
+  return [   prior(i)*guess(i) * lh(prior(i), h, t) \\
+          /  np.sum([i[0]*i[1] for i in zip(prior,guess)]) \\
+         ]

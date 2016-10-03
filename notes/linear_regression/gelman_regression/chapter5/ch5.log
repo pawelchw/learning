@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.9.20)  3 OCT 2016 17:53
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.9.20)  3 OCT 2016 07:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**interpretation.tex
-(./interpretation.tex
+**ch5.tex
+(./ch5.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -22,9 +22,8 @@ File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-(./interpretation.aux)
-\openout1 = `interpretation.aux'.
+) (./ch5.aux)
+\openout1 = `ch5.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 2.
 LaTeX Font Info:    ... okay on input line 2.
@@ -39,19 +38,20 @@ LaTeX Font Info:    ... okay on input line 2.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 2.
 LaTeX Font Info:    ... okay on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 7.
+(Font)              <7> on input line 5.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 7.
+(Font)              <5> on input line 5.
  [1
 
-] [2] (./interpretation.aux) ) 
+]
+(./ch5.aux) ) 
 Here is how much of TeX's memory you used:
- 209 strings out of 493305
- 2306 string characters out of 6139897
- 55877 words of memory out of 5000000
- 3752 multiletter control sequences out of 15000+600000
- 4553 words of font info for 17 fonts, out of 8000000 for 9000
+ 208 strings out of 493305
+ 2195 string characters out of 6139897
+ 52877 words of memory out of 5000000
+ 3751 multiletter control sequences out of 15000+600000
+ 4567 words of font info for 17 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 23i,6n,17p,569b,115s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 23i,4n,17p,150b,107s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on interpretation.dvi (2 pages, 6596 bytes).
+Output written on ch5.dvi (1 page, 1156 bytes).

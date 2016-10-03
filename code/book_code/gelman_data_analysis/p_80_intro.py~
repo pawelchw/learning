@@ -1,0 +1,16 @@
+####
+#this code shows that thre functions return the same values for 
+# different input values of x
+###
+import numpy as np
+
+x = np.linspace(-20,20,100)
+
+def a(x):
+   return 1.0*np.exp(x) / ( 1 + np.exp(x) )
+
+def b(x):
+   return 1.0 / ( 1.0 + np.exp(-x) )
+def c(x):
+   return (1.0 + np.tanh( ( 1.0 * x) / 2) ) / 2
+

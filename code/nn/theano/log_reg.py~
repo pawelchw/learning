@@ -1,0 +1,6 @@
+from __future__ import print_function
+import theano
+import numpy
+import theano.tensor as T
+from theano import function as fn
+import matplotlib.pyplot() as plt
