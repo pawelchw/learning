@@ -1,1 +1,82 @@
+from __future__ import print_function
 import numpy as np
+import pandas as pd
+import csv
+import string
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+#import pymc3 as pm
+#import seaborn as sns
+
+def run_reg(data, outcome, predictors, mode='ols', ps = 'n'):
+
+  ttt = data.ix[:, outcome+predictors]
+
+  if mode=='logit':
+
+    logit = sm.Logit(ttt.ix[:,outcome], sm.add_constant(ttt.ix[:, predictors]) )
+    res= logit.fit()
+    if ps=='y':
+       print(res.summary())
+
+  elif mode =='ols':
+
+    ols = sm.OLS(ttt.ix[:,outcome], sm.add_constant(ttt.ix[:, predictors]) )
+    res= ols.fit()
+    if ps=='y':
+       print(res.summary())
+
+  return ttt, res
+
+N = 1000
+
+h_min_m = 160
+h_max_m = 210
+m = pd.DataFrame()
+m_u = 120000
+m_sd = 10000
+m['gender'] = [1 for i in xrange(N)]
+m['height'] = [np.random.randint(h_min_m, h_max_m) for i in xrange(N)]
+m['pay'] = [ m.ix[i, 'height'] * np.random.randint(m.ix[i,'height'], np.max(m.height)+1 ) for i in xrange(N)]
+
+h_min_f = 150
+h_max_f = 180
+f = pd.DataFrame()
+f_u = 50000
+f_sd = 10000
+f['gender'] = [0 for i in xrange(N)]
+f['height'] = [np.random.randint(h_min_f, h_max_f) for i in xrange(N)]
+f['pay'] = [ f.ix[i, 'height'] * np.random.randint(f.ix[i,'height'], np.max(f.height)+1 ) for i in xrange(N)]
+
+
+
+df = pd.merge( m,f, on=['gender','pay','height'], how='outer')
+df['pay_l'] = np.log(df['pay'])
+
+# pick the predictors and outcome variables
+p=['gender'] # 'height',
+o=['pay_l']
+
+#run the model
+tt, m = run_reg(df,o,p,'ols','n')
+
+logit = sm.Logit(df['gender'], sm.add_constant(df.ix[:, ['pay_l']]))
+print('\n\n')
+res= logit.fit()
+print(res.summary())
+
+plt.scatter(df.ix[:, ['pay_l']], df['gender'], label='gen vs pay')
+x = np.linspace(-2,2,500)
+y = [(1.0 + np.tanh((res.params[0] + res.params[1]*i)/2.0) ) / 2 for i in x]
+plt.plot(x,y, label ='logit^{-1}')
+y1 = [res.params[0] + res.params[1]*i for i in x]
+plt.plot(x,y1, label ='lin')
+plt.grid()
+plt.legend()
+#plt.show()
+
+
+def invlogit(x):
+   return ( 1.0 + np.tanh(x/2.0) ) / 2
+
+

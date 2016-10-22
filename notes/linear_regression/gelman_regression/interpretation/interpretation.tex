@@ -1,4 +1,6 @@
 \documentclass{article}
+\usepackage{graphicx}
+
 \begin{document}
 
 \section{General Notes}
@@ -75,4 +77,68 @@ What we can do is pick two consecutive units of $x$ and then report the percenta
 \\
 \indent
 It is assumed on page 83 that coefficient estimates within two standard errors from the estimated coefficient value are consistent with data. However, a statistically significant coefficient is required to be at least 2 standard errors \textbf{away from zero}.
+\\
+\indent
+There is a good introduction to logistic regression on UCLA website. There is a dataset that contains test results split between two genders. This is the gender distribution:
+\begin{enumerate}
+\item female - 109
+\item male - 91
+\end{enumerate}
+The first analysis is to run a logistic regression to check how many students finish their class with honorous distinction.
+\\
+\begin{tabular}{|c|c|c|}
+\hline 
+& H & N \\ 
+\hline 
+F & 32 & 77 \\ 
+\hline 
+M & 17 & 74 \\
+\hline 
+\end{tabular} 
+\\
+We would like to run a logistic model to regress gender onto class type:
+\begin{equation}
+ h = \beta_0 + \beta_1g
+\end{equation}
+where $h$ represents the class that students attended and $g$ is gender.
+The equation is estimated as
+\begin{equation}
+ h = -1.4709 + 0.5928g
+\end{equation}
+Observe that $\exp(-1.4709) = 0.2297$. The odds of being in honorous class for males is $\frac{17}{74}=0.2297 $, which is the same as the exponent of the intercept. Therefore, the estimated intercept is equal to ratio of the reference group (i.e. male) belonging to the honorous class.
+\\
+\indent Recall, that the ratio of female students attending a honorous class is $\frac{32}{77}$. As a result, the ratio of the odds of females to males is 
+\begin{equation}
+ \frac{\frac{32}{77}}{\frac{17}{74}} = 1.8090
+\end{equation}, which is the same as the exponent of the coefficient of female $\exp(0.5928) = 1.8090$.
+\\
+\indent
+Subsequently, we could analyse a model in which math scored is regress on whether the students have attended a honorous class or not, as in:
+
+\begin{equation}
+ h = \beta_0 + \beta_1m  ,
+\end{equation}
+where $m$ is math score, and $h$ a math score.
+
+%\includegraphics[scale=0.2]{hon_math_logit.png}
+
+Obviously this works well for two binary options. Suppose there is $k-$level categorical variable denoting earnings and it regress on a candidate selection during national elections. Therefore, Gelman on pages 82-82 talks about mathematical approach given the estimated formula. These are the potential solutions
+\begin{itemize}
+\item "Divide by four" - it turns out that if we calculate $\beta \ 4 $ we will get a pretty good estimate of what the percentage of change is given a unit change for a variable.
+\item Unit change - in this approach we plug in 2 consecutive units into the regression equation, and look at the percentage change.
+\item latent approach - defined as an observable set of pairs
+\begin{equation}
+(y_i, X_i\beta + \epsilon)
+\end{equation}
+where $y \in \{0,1\}$, and $y_i = 1,$ when $X_i\beta + \epsilon >0$ and $y_i = 0$ otherwise. Error terms are assumed to have logistic distribution. Also, error term follows Gaussian distribution with $\mu = 0$ and $\sigma = 1.6$
+\begin{equation}
+ \epsilon  N(0, \sigma^2)
+\end{equation}
+\end{itemize}
+%\begin{array}{ccc}
+% & H & N \\ 
+%F & 32 & 77 \\ 
+%M & 17 & 74 \\
+%\end{array}
+
 \end{document}

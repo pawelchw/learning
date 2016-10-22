@@ -1,8 +1,0 @@
-from __future__ import print_function
-import numpy as np
-import pandas as pd
-import csv
-import string
-
-
-c = pd.read_csv("/home/pawel-dell/learning/regression/ucla/sample.csv", skiprows = 1)

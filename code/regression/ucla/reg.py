@@ -40,14 +40,22 @@ logit = sm.Logit(c['hon'], sm.add_constant(c.ix[:, ['math']]))
 print('\n\n')
 res= logit.fit()
 print(res.summary())
+
 print('\nParameter:', res.params, '\nExponential of the parameter: ',np.exp(res.params))
 print('\n\nThe estimated coefficient for the intercept is the log odds of a student with a math score of zero being in an honors class')
 print('Now we can see this is very low due to the math scores being distributed around the value of 50')
 print('\n\n The coefficient of math corresponds to the chage of log odds of being in a honorous class with a unit increase in the math score')
 print('Therefore, the odds of being in the honrous class increase by exp(',res.params[1],')=',np.exp(res.params[1]) ,', which is roughly 17%')
-
-
 print('\n\n')
+
+plt.scatter( c.ix[:,'math'], c.ix[:,'hon'], label='hon vs math')
+x = np.linspace(30,80,500)
+y = [(1.0 + np.tanh((-9.7939 + 0.1563*i)/2.0) ) / 2 for i in x]
+plt.plot(x,y, label ='logit^{-1}(-9.79 + 0.16*x)')
+plt.grid()
+plt.legend()
+plt.show()
+
 
 logit = sm.Logit(c['hon'], sm.add_constant(c.ix[:, ['math','female','read']]))
 print('\n\n')
@@ -55,8 +63,6 @@ res= logit.fit()
 print(res.summary())
 print('\nParameter:', res.params, '\nExponential of the parameter: ',np.exp(res.params))
 print('This fitted model says that, holding math and reading at a fixed value, the odds of getting into an honors class for females (female = 1)over the odds of getting into an honors class for males (female = 0) is exp(',res.params[1],') = ',np.exp(res.params[1]),'; which corresponds to 166% of chance increase. ')
-
-
 
 c.ix[:,'fmath']=c['math']*c['female']
 

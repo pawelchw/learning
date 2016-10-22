@@ -6,7 +6,7 @@ import string
 import statsmodels.api as sm
 import matplotlib.pyplot as plt
 
-c = pd.read_csv("/home/pawel-dell/learning/datasets/regression/ucla/sample.csv")
+c = pd.read_csv("/home/pch/learning/datasets/regression/ucla/sample.csv")
 c.columns = ['female','read','write','math','hon','femalexmath']
 
 logit = sm.Logit(c['hon'], sm.add_constant(c.ix[:, ['female']]))

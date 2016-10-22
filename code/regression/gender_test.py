@@ -58,5 +58,26 @@ p=['gender'] # 'height',
 o=['pay_l']
 
 #run the model
-tt, m = run_reg(df,o,p,'ols','y')
+tt, m = run_reg(df,o,p,'ols','n')
 
+logit = sm.Logit(df['gender'], sm.add_constant(df.ix[:, ['pay_l']]))
+print('\n\n')
+res= logit.fit()
+print(res.summary())
+'''
+plt.scatter(df.ix[:, ['pay_l']], df['gender'], label='gen vs pay')
+x = np.linspace(-2,2,500)
+y = [(1.0 + np.tanh((res.params[0] + res.params[1]*i)/2.0) ) / 2 for i in x]
+plt.plot(x,y, label ='logit^{-1}')
+y1 = [res.params[0] + res.params[1]*i for i in x]
+plt.plot(x,y1, label ='lin')
+plt.grid()
+plt.legend()
+#plt.show()
+
+
+def invlogit(x):
+   return ( 1.0 + np.tanh(x/2.0) ) / 2
+
+
+'''
