@@ -1,0 +1,31 @@
+import pylab as pl
+from sklearn.linear_model import LogisticRegression as lr
+
+p = ['dist100']
+o = ['switch']
+
+model = lr()
+model.fit( df.ix[:, [p]], df.ix[:, [o]])
+'''
+x_min, x_max = np.min(d.ix[:, [p]])-1, np.max(d.ix[:, [p]])+1
+y_min, y_max = np.min(d.ix[:, [o]])-0.1, np.max(d.ix[:, [o]])+0.1
+xx, yy = np.meshgrid(np.linspace(x_min, x_max, 50),
+                     np.linspace(y_min, y_max, 50))
+plt.xlim(xx.min(), xx.max())
+plt.ylim(yy.min(), yy.max())
+
+#plot background colors
+ax = plt.gca()
+Z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+Z = Z.reshape(xx.shape)
+cs = ax.contourf(xx, yy, Z, cmap='RdBu', alpha=.5)
+cs2 = ax.contour(xx, yy, Z, cmap='RdBu', alpha=.5)
+plt.clabel(cs2, fmt = '%2.1f', colors = 'k', fontsize=14)
+
+# Plot the points
+ax.plot(Xtrain[ytrain == 0, 0], Xtrain[ytrain == 0, 1], 'ro', label='Class 1')
+ax.plot(Xtrain[ytrain == 1, 0], Xtrain[ytrain == 1, 1], 'bo', label='Class 2')
+
+# make legend
+plt.legend(loc='upper left', scatterpoints=1, numpoints=1)
+'''

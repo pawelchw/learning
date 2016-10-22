@@ -1,0 +1,27 @@
+def
+import pandas as pd
+#f = csv.DictReader("/home/pch/learning/datasets/regression/gelman_reg/arsenic/test.dat", delimiter =" ")
+f= open("/home/pch/learning/datasets/regression/gelman_reg/arsenic/test.dat","r")
+lines = f.read().split("\n")
+cols = ['switch','arsenic','dist','assoc','educ']
+df = pd.DataFrame(columns = cols)
+counter = 0
+for line in lines:
+   if counter <> 0:
+      vals = line.split()
+      if counter == 1:
+         cnt = 0
+         for c in cols:
+             if cnt <> 0:
+                df[c]=float( vals[cnt])
+             cnt +=1
+         df.loc[0]=[ float(v) for v in vals[1:]]
+      else:
+         df.loc[counter-1]=[ float(v) for v in vals[1:]]
+         
+   counter +=1
+      
+#for w in words:
+#  print w
+#for row in f:
+#  print row
