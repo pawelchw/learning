@@ -49,6 +49,26 @@ intercept& height & male \\ \hline
 \\
 \indent
 The regression model has a residual standard deviation of $0.88$, implying that approximately $68\%$ of log earnings will be within $0.88$ of the predicted value. As a result, a 70-inch tall person will have earnings equal to $8.153 + 0.021 \cdot 70 = 9.623$. Knowing that predictive standard deviation is $0.88$, there is $68$ chance the person earning are within $9.623 +/- 0.88= [8.74, 10.50]= [\exp(8.74), \exp(10.50)] = [6000, 36000]$. The $R^2$ value for this model was pretty low therefore it is expected to observe such a wide salary range.
+\subsection{General approach to standarization}
+On another note, we should always standarize the input data to make the interpretation easier.As a result, when analysing the output coefficients, the requirements for other variables being zero is equal to say they are at their averages. There is an example on page 96 that talks about this scenario.
+\begin{equation}
+s = \beta_0 + \baeta_1 \times d + \baeta_2 \times a + \baeta_3 \times da,
+\end{equation}
+where $s$ is the probability of switching between wells, $d$ is the distance to the closest well, $a$ is the arsenic level and $da$ is the interaction term between distance and arsenic level.
+\\
+\indent
+The model came out to be
+\begin{equation}
+s = 0.35 + -0.88 \times d + 0.47 \times a  -0.18 \times da,
+\end{equation}
+Therefore, the probability of switching when the distance and arsenic level are at their average is equal to $logit^{-1}(0.35) = 0.59$. For distance, we apply the divide by four rule and obtain $-0.88 / 4 = -0.22$. Therefore, at the mean level of arsenic in wells, adding 100 meters to distance will correspond to a negative $0.22$ to probability of switching. Following with arsenic level, we receive that each unit of it, will increase the probability of switching by $0.47 / 4 = 0.12$ when the wells are at the average distance from the household. The interaction term can be interpreted in 2 different ways, always adding a negative $-0.18$ value to the probability of switching. Interaction term can be analysed from two different approaches:
+\begin{itemize}
+\item distance - for each unit of distance; i.e. 100 meters, a value of $-0.18$ is added to the value of arsenic coefficient. Therefore, because the sign of distance coefficient is negative, we can say that by increasing the arsenic level, \textit{the strength} or \textit{the importance} of the distance prediction \textit{increases} accordingly.
+\item arsenic - for each unit of arsenic;  a value of $-0.18$ is added to the value of distance coefficient. Therefore, because the sign of arsenic coefficient is positive, we can say that by increasing the distance to the closes safe well, \textit{the strength} or \textit{the importance} of the distance prediction \textit{decreases} accordingly.
+\end{itemize}
+\\
+\indent
+
 \section{Interaction}
 
 Consider the following model
@@ -79,6 +99,17 @@ What we can do is pick two consecutive units of $x$ and then report the percenta
 It is assumed on page 83 that coefficient estimates within two standard errors from the estimated coefficient value are consistent with data. However, a statistically significant coefficient is required to be at least 2 standard errors \textbf{away from zero}.
 \\
 \indent
+This is also reported on pages 90-91 when there is a following model presented:
+
+\begin{equation}
+ s = -0.9 \cdot d + 0.46 \cdot a,
+\end{equation}
+
+where $s$ is probability of switching between two wells, $d$ is the distance to the nearest well in meters ( divided by 100), $a$ is the arsenic level of the currently used well. Intercept has been estimated as very close to $0$. With the quick application of the dive by 4 rule, we could see that for the same arsenic level, $100m$ corresponds to $-0.22$ probability of switching. Similarly, one unit difference on the arsenic scale corresponds to $11\%$ to probability of switching. What this means is that the closer the safe well is - the easier it is for household to switch. In addition, the higher the arsenic level, the more probable it is to switch.
+\\
+\indent It is very important to note that we cannot claim that distance is more of an influential factor than arsenic level.What we should do instead is to investigate how one standard deviation change in data affects the probability of switching. As a result, we will be able to report on differences in ``common units''. Standard deviations are equal to $ \sigma_d = 0.38$, $\sigma_a = 1.1$, which yields  $-0.9 \cdot 0.38 = -0.34$, and $0.46*1.10=0.51$. Now, we can apply the divide by 4 rule on the estimated data. Thus, a $\sigma_d$ change in distance corresponds to $-8\%$ (negative) difference to the probability of switching, while a $\sigma_a$ change in arsenic level gives $13\%$ in the probability of switching.
+
+\subsubsection{UCLA datasets}
 There is a good introduction to logistic regression on UCLA website. There is a dataset that contains test results split between two genders. This is the gender distribution:
 \begin{enumerate}
 \item female - 109

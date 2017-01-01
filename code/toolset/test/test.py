@@ -5,6 +5,8 @@ import csv
 import string
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression as sklr #import LogisticRegression as lr
+from model import regression as r
+from model import support_machines as sm
 
 def get_data():
   N = 1000
@@ -39,21 +41,24 @@ def get_data():
   df = pd.merge( df_tmp,c, on=['gender','pay','height'], how='outer')
   #df = df_tmp
   df['pay_l'] = np.log(df['pay'])
+  df['avg_h'] = ( df.height - np.mean(df.height) ) / (1.0*np.std(df.height))
   return df
 
 
 
 # pick the predictors and outcome variables
-p=['pay_l'] # 'height',
+p=['pay_l', 'avg_h']
 o=['gender']
 
 df = get_data()
 x = df[p].as_matrix()
 y = df[o].as_matrix() #values.ravel()
-# logit = sk fit( x.as_matrix(),y)
-#model = sklr()
-#Xtrain = x.as_matrix()
-#model.fit(x,y.ravel())
-#xpred =df[p].as_matrix()
-#ypred = model.predict( xpred )
 
+xs_tr, xs_te, ls_tr, ls_te,yspred, smodel=sm.sk_svm(df,o,p,0.3)
+x_tr, x_te, l_tr, l_te,ypred, model=r.sk_reg(df,o,p,0.3)
+
+res = pd.DataFrame(l_tr)
+res['svm'] = yspred 
+print(res.groupby( ['gender','svm']).size())
+res['lg'] = ypred
+print(res.groupby( ['gender','lg']).size())

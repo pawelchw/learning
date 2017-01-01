@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.9.20)  11 OCT 2016 17:06
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=latex 2016.9.20)  20 DEC 2016 07:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -68,24 +68,51 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 9.
  [1
 
-] [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 127.
+]
+! Undefined control sequence.
+l.55 s = \beta_0 + \baeta
+                         _1 \times d + \baeta_2 \times a + \baeta_3 \times da,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
+! Undefined control sequence.
+l.55 s = \beta_0 + \baeta_1 \times d + \baeta
+                                             _2 \times a + \baeta_3 \times da,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+! Undefined control sequence.
+l.55 ...ta_1 \times d + \baeta_2 \times a + \baeta
+                                                  _3 \times da,
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+[2] [3]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 154.
+
+ (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 127.
- [3] [4]
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 154.
+ [4] [5]
 (./interpretation.aux) ) 
 Here is how much of TeX's memory you used:
- 534 strings out of 493305
- 6542 string characters out of 6139897
+ 536 strings out of 493305
+ 6571 string characters out of 6139897
  61676 words of memory out of 5000000
- 4055 multiletter control sequences out of 15000+600000
- 4553 words of font info for 17 fonts, out of 8000000 for 9000
+ 4057 multiletter control sequences out of 15000+600000
+ 5158 words of font info for 19 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 25i,6n,19p,569b,176s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 25i,6n,19p,743b,176s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on interpretation.dvi (4 pages, 10488 bytes).
+Output written on interpretation.dvi (5 pages, 13924 bytes).

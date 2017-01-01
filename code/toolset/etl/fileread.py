@@ -16,8 +16,3 @@ def space_read(loc):
          
          counter +=1
    return df
-      
-#for w in words:
-#  print w
-#for row in f:
-#  print row
