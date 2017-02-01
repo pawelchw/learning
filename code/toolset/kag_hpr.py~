@@ -1,0 +1,14 @@
+from __future__ import print_function
+from model import validate  as va
+from model import correlation_analysis as ca
+from model import feature_importance as fi
+from plot import scat_mat_cor as smc
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import RandomForestRegressor
+import math
+import numpy as np
+#pth_kagle_db
+exec(open('./reqs/filepaths.py').read())
+df = pd.read_csv('/home/pch/learning/datasets/regression/Communities_and_Crime_Unnormalized/data.csv')
+df.columns = col_names

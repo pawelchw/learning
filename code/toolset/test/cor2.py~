@@ -1,0 +1,4 @@
+import numpy as np
+import pandas as pd
+df = pd.DataFrame(np.rnadom.randn(1000,4), columns=['a','b','c','d'])
+scatter_matrix(df, alpha=0.2, diagonal='kde')

@@ -1,0 +1,7 @@
+import numpy as np
+
+def clean_nans(data, limit = 0.8):
+
+   cnt = data.isnull().sum().tolist()
+
+   for xx in dat

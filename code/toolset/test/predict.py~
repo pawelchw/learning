@@ -1,0 +1,27 @@
+import numpy as np
+
+def pred(point):
+  x = 4
+  y = 6
+  r = 3
+  a = ( x - point[0]) ** 2
+  b = ( y - point[1] ) ** 2
+  if a + b <= r:
+     return 1
+  else
+     return 0
+
+xn = 0
+xx = 10
+yn = 0
+yx = 8
+mean = [5,5]
+cov = [ [3,1] , [2,4] ]
+nums = []
+N = 10000
+t_s = np.random.multivariate_normal(mean,cov,N) 
+for i in xrange(N):
+  a = t_s[i]
+  if a[0]>= xn and a[0]<=xx and a[1] >= yn and a[1] <= yx:
+    nums.append(a.ravel())
+

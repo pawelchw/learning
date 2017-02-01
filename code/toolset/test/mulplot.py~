@@ -1,0 +1,14 @@
+import seaborn as sns
+corrmat = l_train.corr()
+sns.headmap(corrmat, vmax = 8, square = True)
+nets = corrmat.columns.get_level_values("network")
+
+f, ax = plt.subplots( figsize = (12,9) )
+for i,n in enumarate(nets):
+
+   if i and n != n[i-1]:
+
+      ax.axhline( len(n)-i, c="w")
+      ax.axvline(i, c="w")
+
+  

@@ -1,0 +1,1 @@
+samples = df.ix[:,names].sample(replace=False, frac=0.2)

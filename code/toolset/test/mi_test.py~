@@ -1,0 +1,16 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import math as mt
+
+
+def corx(N, rho = 0.5):
+  r = numpy.random.randn(N,2)
+  r1 = r[:,0]
+  r11 = r[:,1]
+  r2 = rho*r1 + (1-rho**2)**0.5 * r11
+  return r1,r2
+
+def realm():
+
+  x = np.linespace(0.001, 0.999, 1000)
+  y =  -0.5* mt.log(1-0.5**2,2)
