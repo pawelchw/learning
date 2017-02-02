@@ -1,9 +1,10 @@
 import pandas as pd
+import numpy as np
 
 def corr_greater_than( corrmat, data, limit = 0.8 ):
 
    extracted_colums = pd.DataFrame([], columns=['col1','col2','value', 'co1_unq_values', 'col2_unq_values'])
-   extracted_colums_single = pd.DataFrame([], columns=['col','col_unq_values'])
+   extracted_colums_single = pd.DataFrame([], columns=['col','col_unq_values','corr_val'])
 
    for xx in xrange(len(corrmat.columns)):
       for yy in xrange(xx+1, len(corrmat.columns)):
@@ -18,11 +19,22 @@ def corr_greater_than( corrmat, data, limit = 0.8 ):
                                                          ]
            extracted_colums_single.loc[len(extracted_colums_single)] = [ corrmat.columns[xx]
                                                                          , data.groupby( [ corrmat.columns[xx] ] ).size().shape[0]
+                                                                         , corrmat.ix[xx,yy]
                                                                        ]
            extracted_colums_single.loc[len(extracted_colums_single)] = [ corrmat.columns[yy]
                                                                          , data.groupby( [ corrmat.columns[yy] ] ).size().shape[0]
+                                                                         , corrmat.ix[xx,yy]
                                                                        ]
 
    cols_summary = pd.DataFrame( extracted_colums.groupby( ['col1']).size(), columns=['cnt'] )
+   '''   
+   tmp_pdf = pd.DataFrame( [], columns = extracted_colums_single.columns)
+   bb=extracted_colums_single.groupby( ['col_unq_values'] ).aggregate( [ np.max ] ).reset_index()
+
+   for xx in xrange( len(bb) ) :
+
+      tmp_pdf.loc[ len(zz)] = [bb.ix[xx,:].tolist()[1], bb.ix[xx,:].tolist()[0]]
+   extracted_colums_single = =tmp_pdf
+   '''
    return extracted_colums,extracted_colums_single, cols_summary
 

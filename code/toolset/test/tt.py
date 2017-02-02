@@ -1,10 +1,8 @@
-cor_names = [ ex_col.ix[i,:2].tolist() for i in xrange(len(ex_col))]
-c_names = []
+zz = pd.DataFrame( [], columns = aa.columns)
+zz1 = pd.DataFrame( [], columns = aa.columns)
+bb=aa.ix[:, ['col','col_unq_values'].groupby( ['col'] ).aggregate( [ np.max ] ).reset_index()
+cc=aa.ix[:, ['col','corr_val']].groupby( ['col'] ).aggregate( [ np.min,np.max,np.mean ] ).reset_index()
 
-for xx in xrange( len(cor_names) ):
+for xx in xrange( len(bb) ) :
 
-   c_names = c_names + cor_names [xx]
-
-print(ex_col)
-smc.smc_plot(df_cln, c_names)
-#prep plot of correlated features
+   zz.loc[ len(zz)] = [bb.ix[xx,:].tolist()[1], bb.ix[xx,:].tolist()[0]]
