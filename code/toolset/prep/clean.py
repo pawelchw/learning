@@ -59,13 +59,48 @@ def replace_with_avg(data, string_limit = 0.9):
 
 def outlier_stats(data, limit = 4):
 
-   names = pd.DataFrame([], columns = ['names','mdev', 'prct'])
-   for xx in data.columns:#   ['communityname']:#   ['arsons']     ['fold']
+   names = pd.DataFrame([], columns = ['names','mdev', 'prct', 'var','unq_val'])
+   for xx in data.columns:
 
       if data.ix[:,xx].dtype != 'object':
          d = np.abs(data.ix[:,xx] - np.median(data.ix[:,xx]))
          mdev = np.median(d)
          s = d/mdev if mdev else d
-         names.loc[len(names)] = [xx, mdev, round(data.ix[:,xx][s<4].shape[0]*1.0/ len(data),4)]
+         names.loc[len(names)] = [ xx
+                                   , mdev
+                                   , round(data.ix[:,xx][s<4].shape[0]*1.0/ len(data),4)
+                                   , int(np.var( data.ix[:,xx] ))
+                                   , data.groupby( xx ).size().shape[0]
+                                   ]
 
-   return names
+   sorted_names = names.sort_values( ['prct','var'], ascending=[ True,True] ).reset_index()
+   return sorted_names.ix[:,1:]
+
+
+def replace_categorical(data, columns = []):
+
+   names = []
+
+   if not columns:
+      names = data.columns
+   else:
+      names = columns
+
+   df_trans = pd.DataFrame( [] )
+   for xx in names:
+
+      if data[ xx ].dtype == 'object':
+
+         xxx = data.groupby( xx ).size().reset_index()
+         aa = data[xx]
+         bb = pd.DataFrame( [], columns = [xx] )
+
+         for yy in xrange( len(aa) ):
+
+            bb.loc[ len(bb) ] =  float(xxx[ xxx[ xx ]== aa.ix[yy,xx] ].index[0])
+
+         df_trans[ xx+'_orig'] = data[xx]
+         df_trans[ xx+'_tran'] = bb
+
+   return df_trans
+   

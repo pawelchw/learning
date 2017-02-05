@@ -1,4 +1,32 @@
-for xx in df_cln.names:
-   if df_cln.ix[:,xx].isnull().sum().tolist() > 0:
-      print( xx )
-      print(df_cln.ix[:,xx].dtype)
+aa = df_cln
+for xx in aa.columns:
+
+   if aa[xx].dtype =='object':
+
+      aa[xx] = df_cln_fnl[ xx+'_tran']
+
+
+aa = aa.ix[:,1:]
+
+for xx in aa.columns:
+
+   if xx != 'SalePrice':
+
+     c = aa.ix[:,xx]
+     aa[xx] = ( c - np.mean(c))/ np.std(c)
+
+
+
+aa [ 'SalePrice'] = np.log( 1+aa.ix[:, 'SalePrice'])
+
+from sklearn.decomposition import PCA
+
+pca = PCA()
+
+list(set(df_cln.columns) - set(['SalePrice']))   
+
+x_train, x_test, l_train, l_test = va.train_split(df, o, names_not_pred, ratio = 0.3 )
+
+
+
+
