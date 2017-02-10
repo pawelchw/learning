@@ -1,0 +1,62 @@
+aa = df_cln
+for xx in aa.columns:
+
+   if aa[xx].dtype =='object':
+
+      aa[xx] = df_cln_fnl[ xx+'_tran']
+
+
+aa = aa.ix[:,1:]
+
+for xx in aa.columns:
+
+   if xx != 'SalePrice':
+
+     c = aa.ix[:,xx]
+     aa[xx] = ( c - np.mean(c))/ np.std(c)
+
+
+
+aa [ 'SalePrice'] = np.log( 1+aa.ix[:, 'SalePrice'])
+
+
+o = ['SalePrice']
+names_not_pred = list(set(aa.columns) - set(o))   
+from sklearn.svm import SVR
+
+
+x_train, x_test, l_train, l_test = va.train_split(aa, o, names_not_pred, ratio = 0.3 )
+
+#{'kernel': 'sigmoid', 'C': 2, 'gamma': 0.0005}
+#clf = SVR(C=2.0, epsilon = 0.01, kernel = 'poly')
+#clf = SVR(C=2.0, epsilon = 0.0005, kernel = 'poly')
+#clf.fit(x_train,l_train.as_matrix().ravel())
+#l_test_out = clf.predict(x_test)
+
+#l_test[ 'pred'] = l_test_out
+#outp = [ int(i) for i in abs(np.exp(l_test[ 'pred'].as_matrix())-1 - (  np.exp(l_test[ 'SalePrice'].as_matrix())) -1 )]
+
+#www=plt.hist(outp, bins=100)
+#plt.show()
+
+o = ['SalePrice']
+names_not_pred = list(set(aa.columns) - set(o))   
+
+X = x_train.ix[:, names_not_pred].as_matrix()
+Y = l_train.ix[:, o].as_matrix().ravel()
+
+
+k=['poly','rbf']#'rbf', 'linear','poly','sigmoid']
+c= [10,50,100,1000]#range(10,100,15)
+g=[0.0001,0.0005,0.001, 0.1]#np.arange(1e-4,1e-2,0.002)
+g=g#tolist()
+param_grid=dict(kernel=k, C=c, gamma=g)
+print param_grid
+
+clf = SVR()
+clf.fit(C=100,kernel='poly', X,Y)
+
+
+from sklearn.learning_curve import learning_curve
+
+train_scores, validatino_scores = learning_curve(clf(), X,Y,gamma=g,cv=5)

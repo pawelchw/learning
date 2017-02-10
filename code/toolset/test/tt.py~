@@ -19,14 +19,21 @@ for xx in aa.columns:
 
 aa [ 'SalePrice'] = np.log( 1+aa.ix[:, 'SalePrice'])
 
-from sklearn.decomposition import PCA
-
-pca = PCA()
-
-list(set(df_cln.columns) - set(['SalePrice']))   
-
-x_train, x_test, l_train, l_test = va.train_split(df, o, names_not_pred, ratio = 0.3 )
+o = ['SalePrice']
+names_not_pred = list(set(aa.columns) - set(o))   
+from sklearn.svm import SVR
 
 
+x_train, x_test, l_train, l_test = va.train_split(aa, o, names_not_pred, ratio = 0.3 )
+x_train_tr = pca.fit_transform(x_train)
+x_test_tr = pca.transform(x_test)
 
+clf = SVR(C=10.0, gamma = 0.0001, kernel = 'rbf')
+clf.fit(x_train,l_train.as_matrix().ravel())
+l_test_out = clf.predict(x_test)
 
+l_test[ 'pred'] = l_test_out
+outp = [ int(i) for i in abs(np.exp(l_test[ 'pred'].as_matrix())-1 - (  np.exp(l_test[ 'SalePrice'].as_matrix())) -1 )]
+
+www=plt.hist(outp, bins=100)
+plt.show()
