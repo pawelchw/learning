@@ -11,7 +11,7 @@ for xx in aa.columns[1:]:
 
    #dt = aax
    if ( xx != 'SalePrice' ) and (
-           ( xx+'_orig' in df_cln_fnl.columns and str(df_cln_fnl[xx+'_orig'].dtype) <> 'object' ) # exists in trans and no str
+           ( xx+'_orig' in df_cln_fnl.columns and str(df_cln_fnl[xx+'_orig'].dtype) != 'object' ) # exists in trans and no str
         or ( not xx+'_orig' in df_cln_fnl.columns ) # does not exists in trans
       ):
 

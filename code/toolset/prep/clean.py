@@ -8,7 +8,7 @@ def clean_nans(data, limit = 0.8):
    cnt = [ i*1.0/len(cnt) for i in cnt]
    names = data.columns
    drop_names = []
-   for xx in xrange( len(cnt) ):
+   for xx in range( len(cnt) ):
 
       if cnt[xx] >= limit:
 
@@ -95,7 +95,7 @@ def replace_categorical(data, columns = []):
          aa = data[xx]
          bb = pd.DataFrame( [], columns = [xx] )
 
-         for yy in xrange( len(aa) ):
+         for yy in range( len(aa) ):
 
             bb.loc[ len(bb) ] =  float(xxx[ xxx[ xx ]== aa.ix[yy,xx] ].index[0])
 

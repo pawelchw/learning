@@ -6,8 +6,8 @@ def corr_greater_than( corrmat, data, limit = 0.85 ):
    extracted_colums = pd.DataFrame([], columns=['col1','col2','value', 'co1_unq_values', 'col2_unq_values'])
    extracted_colums_single = pd.DataFrame([], columns=['col','col_unq_values','corr_val'])
 
-   for xx in xrange(len(corrmat.columns)):
-      for yy in xrange(xx+1, len(corrmat.columns)):
+   for xx in range(len(corrmat.columns)):
+      for yy in range(xx+1, len(corrmat.columns)):
 
          if corrmat.ix[xx,yy] >= limit :
 
