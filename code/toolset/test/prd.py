@@ -39,7 +39,8 @@ for xx in l_col.col.tolist():
    df_res_sng.loc[len(df_res_sng)] = [xx, l_col.corrval[l_col.col == xx].tolist(), prev_mse,prev_eva,mse,eva]
 
 
-df_res = pd.DataFrame([], columns=['feature','cor','prev_mse','prev_eva','mse','eva'])          
+df_res = pd.DataFrame([], columns=['feature','cor','prev_mse','prev_eva','mse','eva'])    
+columns =[]      
 for xx in l_col.col.tolist():
 
    l_cor = l_col[l_col.col == xx].ix[:,1].tolist()
@@ -60,3 +61,55 @@ for xx in l_col.col.tolist():
    eva = explained_variance_score(yte,y_pred)
    df_res.loc[len(df_res)] = [xx, l_col.corrval[l_col.col == xx].tolist(), prev_mse,prev_eva,mse,eva]
 
+
+from sklearn.linear_model import Ridge
+df_res_ridge = pd.DataFrame([], columns=['feature','cor','prev_mse','prev_eva','mse','eva'])          
+columns =[] 
+for xx in l_col.col.tolist():
+
+   l_cor = l_col[l_col.col == xx].ix[:,1].tolist()
+   columns = columns+ [xx]
+   df_t = aa.ix[:, columns].as_matrix()
+   X,y = shuffle(df_t, df_l,random_state=123)
+   num_training = int(0.8 * len(X))
+   Xtr, ytr = X[:num_training], y[:num_training]
+   Xte, yte = X[num_training:], y[num_training:]
+   reg = Ridge(alpha = 0.0001)
+   reg.fit(Xtr,ytr)
+   y_pred = reg.predict(Xte)
+   prev_mse = mse
+   prev_eva = eva
+   mse = mean_squared_error(yte,y_pred)
+   eva = explained_variance_score(yte,y_pred)
+   df_res_ridge.loc[len(df_res_ridge)] = [xx, l_col.corrval[l_col.col == xx].tolist(), prev_mse,prev_eva,mse,eva]
+
+                    
+                    
+from sklearn.linear_model import Lasso
+df_res_lasso = pd.DataFrame([], columns=['feature','cor','prev_mse','prev_eva','mse','eva'])          
+columns =[] 
+for xx in l_col.col.tolist():
+
+   l_cor = l_col[l_col.col == xx].ix[:,1].tolist()
+   columns = columns+ [xx]
+   df_t = aa.ix[:, columns].as_matrix()
+   X,y = shuffle(df_t, df_l,random_state=123)
+   num_training = int(0.8 * len(X))
+   Xtr, ytr = X[:num_training], y[:num_training]
+   Xte, yte = X[num_training:], y[num_training:]
+   reg = Lasso(alpha = 0.0001)
+   reg.fit(Xtr,ytr)
+   y_pred = reg.predict(Xte)
+   prev_mse = mse
+   prev_eva = eva
+   mse = mean_squared_error(yte,y_pred)
+   eva = explained_variance_score(yte,y_pred)
+   df_res_lasso.loc[len(df_res_lasso)] = [xx, l_col.corrval[l_col.col == xx].tolist(), prev_mse,prev_eva,mse,eva]
+
+                    
+plt.plot( df_res.index, df_res.mse, label = 'ada')
+plt.plot( df_res_sng.index, df_res_sng.mse, label = 'tree')
+plt.plot( df_res_ridge.index, df_res_ridge.mse, label = 'ridge')
+plt.plot( df_res_lasso.index, df_res_lasso.mse, label = 'lass0')
+plt.legend()
+plt.show()
