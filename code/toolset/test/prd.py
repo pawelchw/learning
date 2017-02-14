@@ -74,7 +74,7 @@ for xx in l_col.col.tolist():
    num_training = int(0.8 * len(X))
    Xtr, ytr = X[:num_training], y[:num_training]
    Xte, yte = X[num_training:], y[num_training:]
-   reg = Ridge(alpha = 0.0001)
+   reg = Ridge(alpha = 0.001)
    reg.fit(Xtr,ytr)
    y_pred = reg.predict(Xte)
    prev_mse = mse
@@ -97,7 +97,7 @@ for xx in l_col.col.tolist():
    num_training = int(0.8 * len(X))
    Xtr, ytr = X[:num_training], y[:num_training]
    Xte, yte = X[num_training:], y[num_training:]
-   reg = Lasso(alpha = 0.0001)
+   reg = Lasso(alpha = 0.001)
    reg.fit(Xtr,ytr)
    y_pred = reg.predict(Xte)
    prev_mse = mse
